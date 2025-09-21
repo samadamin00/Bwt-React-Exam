@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 export default function Home() {
-  let [data, setData] = useState([])
+  let [data, setData] = useState([]);
   useEffect(() => {
     let fetchData = async () => {
       try {
-        let response = await fetch("https://dummyjson.com/products")
+        let response = await fetch("https://dummyjson.com/products");
         let result = await response.json();
-        console.log(result.products)
-        setData(result.products)
+        console.log(result.products);
+        setData(result.products);
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData()
-  }, [])
+    };
+    fetchData();
+  }, []);
   return (
     <>
       {/* Navbar */}
@@ -82,14 +81,19 @@ export default function Home() {
       </div>
       {/* Products Section */}
       <div className="container mx-auto bg-white p-6">
-        <h1 className="mb-6 text-3xl font-bold text-gray-800">Featured Products</h1>
+        <h1 className="mb-6 text-3xl font-bold text-gray-800">
+          Featured Products
+        </h1>
         {/* Product Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {/* Product Card 1 */}
           {data && data.length > 0 ? (
             data.map((product, index) => (
-              <div key={index} className="boder-green-200 overflow-hidden rounded-lg border bg-white">
-                <Link to={`/${product.id}`}>
+              <div
+                key={index}
+                className="boder-green-200 overflow-hidden rounded-lg border bg-white"
+              >
+                <Link to={`/product/${product.id}`}>
                   <img
                     className="h-48 w-full object-cover"
                     src={product.images}
@@ -110,26 +114,6 @@ export default function Home() {
           ) : (
             <p>Loading data...</p> // Or handle the empty state
           )}
-          {data.map((product, index) => (
-            <div key={index} className="boder-green-200 overflow-hidden rounded-lg border bg-white">
-              <Link to={`/${product.id}`}>
-                <img
-                  className="h-48 w-full object-cover"
-                  src={product.images}
-                  alt="Product 1"
-                />
-              </Link>
-              <div className="p-4">
-                <h3 className="mb-2 text-lg font-semibold text-gray-800">
-                  {product.title}
-                </h3>
-                <p className="mb-4 text-gray-600">{product.price}</p>
-                <button className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-                  Buy Now
-                </button>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
       {/* Footer Section */}
@@ -172,6 +156,5 @@ export default function Home() {
         </div>
       </footer>
     </>
-
-  )
+  );
 }

@@ -1,15 +1,24 @@
 import React, { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router'
+import {useNavigate } from 'react-router'
 
 export const SignUp = () => {
+    let [name,setName] = useState("")
     let [email,setEmail] = useState("")
     let [pass,setPass] = useState("")
+    let [confPass,setConfPass] = useState("")
     let navig = useNavigate()
-    let handleSubmit = ()=>{
-        if(pass != "") {
-        return  alert("Password is not empty")
+    let handleSubmit = (e)=>{
+        e.preventDefault()
+        if(name.length <= 2 || name == ""){
+          return  alert('Cannot be empty and must be longer than 2 characters.')
         }
-        else if(!email.includes("@")) return alert("your Email is not email format")
+        else if(pass !== confPass){
+          return  alert("Password and Confirm Password fields must match.")
+        }
+        else if(!email.includes("@") || !email.includes('.')) {
+            return alert("Must be valid email format.")
+        }
+        localStorage.setItem('isLoggedIn', 'true');
         navig('/')
     }   
     return (
@@ -38,9 +47,10 @@ export const SignUp = () => {
                             </label>
                             <div className="mt-1">
                                 <input
-                                onChange={(e)=> setEmail(e.target.value)}
                                     id="name"
                                     name="name"
+                                    value={name}
+                                    onChange={(e)=> setName(e.target.value)}
                                     type="text"
                                     autoComplete="name"
                                     required
@@ -60,10 +70,9 @@ export const SignUp = () => {
                                 <input
                                     id="email"
                                     name="email"
-                                    onChange={(e)=> setPass(e.target.value)}
+                                    value={email}
+                                    onChange={(e)=> setEmail(e.target.value)}
                                     type="email"
-                                    autoComplete="email"
-                                    required
                                     className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
@@ -80,6 +89,8 @@ export const SignUp = () => {
                                 <input
                                     id="password"
                                     name="password"
+                                    value={pass}
+                                    onChange={(e)=> setPass(e.target.value)}
                                     type="password"
                                     autoComplete="current-password"
                                     required
@@ -99,6 +110,8 @@ export const SignUp = () => {
                                 <input
                                     id="confirm-password"
                                     name="confirm-password"
+                                    value={confPass}
+                                    onChange={(e)=> setConfPass(e.target.value)}
                                     type="password"
                                     autoComplete="new-password"
                                     required
